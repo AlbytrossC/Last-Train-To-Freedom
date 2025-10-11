@@ -6,15 +6,13 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public InputActionAsset InputActions;
-    
     private InputAction iMoveAction;
     private InputAction iJumpAction;
-
     private Vector2 moveAmount;
     private Rigidbody rb;
-    
-    public float walkSpeed = 5;
-    public float jumpSpeed = 5;
+    public float walkSpeed = 50;
+    public float jumpForce = 50;
+    private bool isGrounded = true;
     private void OnEnable()
     {
         InputActions.FindActionMap("Player").Enable();
@@ -33,16 +31,22 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         moveAmount = iMoveAction.ReadValue<Vector2>();
-        print(moveAmount);
         if (iJumpAction.WasPressedThisFrame())
         {
-            Jump();
+            if (isGrounded)
+                Jump();
         }
     }
 
     private void Jump()
     {
-        rb.AddForceAtPosition(new Vector3(0, jumpSpeed, 0), Vector3.up, ForceMode.Impulse);
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        isGrounded = false;
+    }
+
+    private void OnCollisionStay(Collision other)
+    {
+        isGrounded = true;
     }
 
     private void FixedUpdate()
