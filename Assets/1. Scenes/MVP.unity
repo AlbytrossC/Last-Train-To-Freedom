@@ -1147,6 +1147,7 @@ MonoBehaviour:
   InputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   walkSpeed: 50
   jumpForce: 40
+  climbSpeed: 50
 --- !u!54 &565783642
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2763,120 +2764,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3014885751854444523, guid: 2a37846cd246d07448008fe8c3d43d7d, type: 3}
   m_PrefabInstance: {fileID: 1731322137}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1733171853
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2611024376631849050, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_Name
-      value: Electrical Pole (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 640
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
---- !u!1001 &1819207596
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2611024376631849050, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_Name
-      value: Electrical Pole (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 440
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
 --- !u!1001 &1826344497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3112,63 +2999,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1380863548668452485, guid: ed70698d9aad7874c8ddd8af8d79c896, type: 3}
   m_PrefabInstance: {fileID: 989620653}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &2001212015
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2611024376631849050, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_Name
-      value: Electrical Pole (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 240
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
 --- !u!1001 &2041619343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3419,6 +3249,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Electrical Pole
       objectReference: {fileID: 0}
+    - target: {fileID: 8320787269387291286, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 565783641}
     - target: {fileID: 8608467603308106449, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40
@@ -3660,6 +3494,3 @@ SceneRoots:
   - {fileID: 162485349}
   - {fileID: 1847444312}
   - {fileID: 5026279384825976676}
-  - {fileID: 2001212015}
-  - {fileID: 1819207596}
-  - {fileID: 1733171853}

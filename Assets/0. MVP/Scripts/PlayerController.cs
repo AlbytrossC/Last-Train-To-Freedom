@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 40;
     public float climbSpeed = 50;
     private bool isGrounded = true;
+    private bool isClimbing = false;
+    private bool canClimb = false;
     private void OnEnable()
     {
         InputActions.FindActionMap("Player").Enable();
@@ -65,6 +67,27 @@ public class PlayerController : MonoBehaviour
     }
     private void Climbing()
     {
-        rb.AddForce(transform.up * moveAmount.y * climbSpeed * Time.deltaTime, ForceMode.Force);
+        if (isClimbing)
+        {
+            rb.MovePosition(rb.position + transform.up * moveAmount.y * climbSpeed * Time.deltaTime);
+            //transform.Translate(new Vector3(0, moveAmount.y, 0) * climbSpeed * Time.deltaTime);
+        }
     }
+
+    public void TogglePlayerClimb()
+    {
+        isClimbing = !isClimbing;
+        switch (isClimbing) 
+        {
+            case true:
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                break;
+            case false: 
+                gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                break;
+        }
+    }
+
+    public void AllowToggleClimb() => canClimb = true;
+    public void DenyToggleClimb() => canClimb = false;
 }
