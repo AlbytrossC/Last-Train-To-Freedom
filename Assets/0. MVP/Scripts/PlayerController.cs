@@ -16,8 +16,9 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 40;
     public float climbSpeed = 50;
     private bool isGrounded = true;
-    private bool isClimbing = false;
+    public bool isClimbing = false;
     private bool canClimb = false;
+    public bool startClimb = false;
     private void OnEnable()
     {
         InputActions.FindActionMap("Player").Enable();
@@ -67,10 +68,19 @@ public class PlayerController : MonoBehaviour
     }
     private void Climbing()
     {
-        if (isClimbing)
+        switch (isClimbing)
         {
-            rb.MovePosition(rb.position + transform.up * moveAmount.y * climbSpeed * Time.deltaTime);
-            //transform.Translate(new Vector3(0, moveAmount.y, 0) * climbSpeed * Time.deltaTime);
+            case true: rb.MovePosition(rb.position + transform.up * moveAmount.y * climbSpeed * Time.deltaTime);
+                break;
+            case false:
+                if (canClimb)
+                {
+                    if (moveAmount.y != 0)
+                    {
+                        startClimb = true;
+                    }
+                }
+                break;
         }
     }
 
