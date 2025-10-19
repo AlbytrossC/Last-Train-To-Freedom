@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveAmount;
     private Rigidbody rb;
     public float walkSpeed = 50;
+    public float runSpeed = 65;
+    private float moveSpeed;
     public float jumpForce = 40;
     public float climbSpeed = 50;
     private bool isGrounded = true;
@@ -32,8 +34,9 @@ public class PlayerController : MonoBehaviour
     {
         iMoveAction = InputActions.FindAction("Player/Move");
         iJumpAction = InputActions.FindAction("Player/Jump");
-        iRunAction = InputActions.FindAction("Player/Run");
+        iRunAction = InputActions.FindAction("Player/Sprint");
         rb = GetComponent<Rigidbody>();
+        moveSpeed = walkSpeed;
     }
     void Update()
     {
@@ -64,7 +67,9 @@ public class PlayerController : MonoBehaviour
 
     private void Walking()
     {
-        rb.MovePosition(rb.position + transform.forward * moveAmount.x * walkSpeed * Time.deltaTime);
+        rb.MovePosition(rb.position + transform.forward * moveAmount.x * moveSpeed * Time.deltaTime);
+        if (iRunAction.IsPressed()) moveSpeed = runSpeed;
+        else moveSpeed = walkSpeed;
     }
     private void Climbing()
     {
