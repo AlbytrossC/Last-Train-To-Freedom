@@ -1,5 +1,6 @@
 using System;
-using NUnit.Framework.Internal;
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +10,8 @@ public class PlayerController : MonoBehaviour
     private InputAction iMoveAction;
     private InputAction iJumpAction;
     private InputAction iRunAction;
-    
+
+    public int currentPoleID;
     private Vector2 moveAmount;
     private Rigidbody rb;
     public float walkSpeed = 50;
@@ -21,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public bool isClimbing = false;
     private bool canClimb = false;
     public bool startClimb = false;
+
+    private Camera mainCamera;
     private void OnEnable()
     {
         InputActions.FindActionMap("Player").Enable();
@@ -37,6 +41,12 @@ public class PlayerController : MonoBehaviour
         iRunAction = InputActions.FindAction("Player/Sprint");
         rb = GetComponent<Rigidbody>();
         moveSpeed = walkSpeed;
+        mainCamera = Camera.main;
+    }
+
+    public void SetCurrentPoleID(int id)
+    {
+        currentPoleID = id;
     }
     void Update()
     {
@@ -68,9 +78,30 @@ public class PlayerController : MonoBehaviour
     private void Walking()
     {
         rb.MovePosition(rb.position + transform.forward * moveAmount.x * moveSpeed * Time.deltaTime);
-        if (iRunAction.IsPressed()) moveSpeed = runSpeed;
-        else moveSpeed = walkSpeed;
+        moveSpeed = iRunAction.IsPressed() ? runSpeed : walkSpeed;
+        mainCamera.fieldOfView = iRunAction.IsPressed() ? Mathf.Lerp(65, 60, 0.1f) : Mathf.Lerp(60, 65, 0.1f);
     }
+
+    // private IEnumerator AnimateFOVChange(bool sprinting)
+    // {
+    //     int val = 0;
+    //     switch (sprinting)
+    //     {
+    //         case true:
+    //             val = 10;
+    //             break;
+    //         case false:
+    //             val = -10;
+    //             break;
+    //     }
+    //     yield return new WaitForSeconds(0.1f);
+    //     mainCamera.fieldOfView += val;
+    //     yield return new WaitForSeconds(0.1f);
+    //     mainCamera.fieldOfView += val;
+    //     yield return new WaitForSeconds(0.1f);
+    //     mainCamera.fieldOfView += val;
+    //     print("Changed FOV");
+    // }
     private void Climbing()
     {
         switch (isClimbing)

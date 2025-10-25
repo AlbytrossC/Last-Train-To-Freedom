@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ClimbableZone : MonoBehaviour
 {
+    public int poleID;
     public PlayerController playerController;
     public GameObject player;
     public GameObject popupText;
@@ -63,8 +64,9 @@ public class ClimbableZone : MonoBehaviour
 
     private void Update()
     {
-        if (playerController.isClimbing)
+        if (playerController.isClimbing && playerController.currentPoleID == poleID)
         {
+            popupText.SetActive(true);
             if (player.transform.position.y < (botY - 1))
                 EndClimbing(false);
             if (player.transform.position.y > (topY + 1))
@@ -74,6 +76,7 @@ public class ClimbableZone : MonoBehaviour
 
     private void StartClimbing()
     {
+        playerController.SetCurrentPoleID(poleID);
         playerController.TogglePlayerClimb();
         popupText.SetActive(false);
         if (player.transform.position.y > midHeightY)
@@ -83,18 +86,24 @@ public class ClimbableZone : MonoBehaviour
     }
     private void EndClimbing(bool onTop)
     {
-        switch (onTop)
+        if (poleID == playerController.currentPoleID)
         {
-            case true:
-                player.transform.position = ExitTopPos.transform.position;
-                break;
-            case false:
-                player.transform.position = ExitBotPos.transform.position;
-                break;
+            switch (onTop)
+            {
+                case true:
+                    player.transform.position = ExitTopPos.transform.position;
+                    print("Pole: "+poleID+" Player: "+playerController.currentPoleID);
+                    break;
+                case false:
+                    player.transform.position = ExitBotPos.transform.position;
+                    print("Pole: "+poleID+" Player: "+playerController.currentPoleID);
+                    break;
+            }
+            playerController.TogglePlayerClimb();
+            StartCoroutine(ClimbCooldown());
+            player.GetComponent<Rigidbody>().linearVelocity = player.GetComponent<Rigidbody>().linearVelocity * 0.5f;
         }
-        playerController.TogglePlayerClimb();
-        StartCoroutine(ClimbCooldown());
-        player.GetComponent<Rigidbody>().linearVelocity = player.GetComponent<Rigidbody>().linearVelocity * 0.5f;
+        popupText.SetActive(false);
     }
 
     private IEnumerator ClimbCooldown()

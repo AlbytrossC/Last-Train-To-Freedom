@@ -1388,6 +1388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  currentPoleID: 0
   walkSpeed: 45
   runSpeed: 75
   jumpForce: 40
@@ -5630,10 +5631,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Electrical Pole (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2611024376631849050, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8320787269387291286, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 565783635}
+    - target: {fileID: 8320787269387291286, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
+      propertyPath: poleID
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8320787269387291286, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
       propertyPath: playerController
       value: 
@@ -5936,6 +5945,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 565783635}
+    - target: {fileID: 8320787269387291286, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
+      propertyPath: poleID
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8320787269387291286, guid: fc026ba391c7cec49b3215d35788f580, type: 3}
       propertyPath: playerController
       value: 
