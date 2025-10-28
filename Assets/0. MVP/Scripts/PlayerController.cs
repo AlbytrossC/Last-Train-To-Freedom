@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,8 +24,10 @@ public class PlayerController : MonoBehaviour
     public bool isClimbing = false;
     private bool canClimb = false;
     public bool startClimb = false;
-
-    private Camera mainCamera;
+    
+    public Camera cam1;
+    public Camera cam2;
+    public TMP_Text camHUDtxt;
     private void OnEnable()
     {
         InputActions.FindActionMap("Player").Enable();
@@ -41,7 +44,6 @@ public class PlayerController : MonoBehaviour
         iRunAction = InputActions.FindAction("Player/Sprint");
         rb = GetComponent<Rigidbody>();
         moveSpeed = walkSpeed;
-        mainCamera = Camera.main;
     }
 
     public void SetCurrentPoleID(int id)
@@ -55,6 +57,12 @@ public class PlayerController : MonoBehaviour
         {
             if (isGrounded)
                 Jump();
+        }
+        if (Input.GetKeyDown(KeyCode.C)) {
+            cam1.enabled = !cam1.enabled;
+            cam2.enabled = !cam2.enabled;
+            print("Switching Camera");
+            camHUDtxt.text = Camera.main.gameObject.name;
         }
     }
 
@@ -74,12 +82,16 @@ public class PlayerController : MonoBehaviour
         Walking();
         Climbing();
     }
-
     private void Walking()
     {
         rb.MovePosition(rb.position + transform.forward * moveAmount.x * moveSpeed * Time.deltaTime);
         moveSpeed = iRunAction.IsPressed() ? runSpeed : walkSpeed;
-        mainCamera.fieldOfView = iRunAction.IsPressed() ? Mathf.Lerp(65, 60, 0.1f) : Mathf.Lerp(60, 65, 0.1f);
+        Camera.main.fieldOfView = iRunAction.IsPressed() ? Mathf.Lerp(65, 60, 0.1f) : Mathf.Lerp(60, 65, 0.1f);
+
+        // if (iRunAction.IsPressed())
+        // {
+        //     Camera.main.fieldOfView = Mathf.Lerp(65, 60, 0.1f);
+        // }
     }
 
     // private IEnumerator AnimateFOVChange(bool sprinting)
