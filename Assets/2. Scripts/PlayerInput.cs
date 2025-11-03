@@ -31,8 +31,6 @@ public class PlayerInput : MonoBehaviour
     private float walkSpeed = 55;
     [SerializeField, Tooltip ("How fast the player moves mid-dash")]
     private float dashSpeed = 85;
-    [SerializeField, Tooltip ("How long the player is dashing in seconds")]
-    private float dashTime = 0.3f;
     #endregion Public
     #region Local
     

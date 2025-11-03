@@ -1,0 +1,160 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerControl : MonoBehaviour
+{
+    #region Public Variables
+    [Header("Horizontal Movement")]
+    [Tooltip("Walking speed")]
+    public float walkSpeed = 6f * 10f;
+
+    [Header("Dash")]
+    [Tooltip("Speed while dashing (units per second)")]
+    public float dashSpeed = 120f;
+    [Tooltip("How long the dash lasts (seconds).")]
+    public float dashDuration = 0.25f;
+    [Tooltip("Seconds between dashes.")]
+    public float dashCooldown = 0.6f;
+    [Tooltip("How fast player speed eases back to walk speed after dash speed ends.")]
+    [Range(1f, 100f)]
+    public float dashRecoveryRate = 8f;
+
+    [Header("Jump")]
+    [Tooltip("Impulse Force applied when jumping.")]
+    public float jumpForce = 7f * 10f;
+
+    [Header("Ground Check")]
+    public LayerMask groundMask;
+    public Transform groundCheck;
+    public Vector3 halfWidth = new Vector3(4f, 2f, 4f);
+
+    [Header("Extra Gravity (optional)")]
+    [Tooltip("Additional downward force ontop of gravity (-100)")]
+    public float extraGravityForce = 0f;
+
+    [Header("Input")]
+    public InputActionAsset actionsAsset;
+    #endregion
+    #region Private Variables
+    private Rigidbody _rb;
+    private InputAction _moveAction;
+    private InputAction _jumpAction;
+    private InputAction _dashAction;
+
+    private Vector2 _moveInput;   // X = left/right Y = up/down 
+    private bool _isGrounded;
+    private bool _isDashing;
+    private float _dashTimer;
+    private Vector3 _dashDirection;
+    private float _lastDashTime = -Mathf.Infinity;
+    private float TargetSpeed => walkSpeed;
+    #endregion
+    #region Unity Methods
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _rb.interpolation = RigidbodyInterpolation.Interpolate;
+        _rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        _rb.freezeRotation = true;
+        
+        var playerMap = actionsAsset.FindActionMap("Main");
+        _moveAction = playerMap.FindAction("Move");
+        _jumpAction = playerMap.FindAction("Jump");
+        _dashAction = playerMap.FindAction("Dash");
+        
+        _jumpAction.performed += ctx => Jump();
+        _dashAction.performed += ctx => StartDash();
+    }
+
+    private void OnEnable()
+    {
+        _moveAction.Enable();
+        _jumpAction.Enable();
+        _dashAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _moveAction.Disable();
+        _jumpAction.Disable();
+        _dashAction.Disable();
+    }
+
+    private void Update()
+    {
+        _moveInput = _moveAction.ReadValue<Vector2>();
+    }
+
+    private void FixedUpdate()
+    {
+        _isGrounded = Physics.CheckBox(
+            groundCheck.position,
+            halfWidth,
+            Quaternion.identity,                                 
+            groundMask, QueryTriggerInteraction.Ignore);
+
+        if (_isDashing)
+        {
+            Vector3 vel = _rb.linearVelocity;
+            vel.x = _dashDirection.x * dashSpeed;
+            _rb.linearVelocity = vel;
+
+            _dashTimer -= Time.fixedDeltaTime;
+            if (_dashTimer <= 0f)
+            {
+                _isDashing = false;
+            }
+        }
+        else
+        {
+            HorizontalMovement();
+        }
+
+        if (Mathf.Abs(extraGravityForce) > 0.001f)
+        {
+            _rb.AddForce(Vector3.down * extraGravityForce, ForceMode.Force);
+        }
+    }
+    #endregion
+    #region Movement & Mechanics
+    private void Jump()
+    {
+        if (_isGrounded) _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+    }
+
+    private void StartDash()
+    {
+        // Prevent new dash while dashing or if dash on cooldown
+        if (_isDashing) return;
+        if (Time.time - _lastDashTime < dashCooldown) return;
+
+        // Set dash direction based on input direction
+        // If no input, dash right
+        float horiz = _moveInput.x;
+        _dashDirection = Mathf.Abs(horiz) > 0.1f
+            ? (horiz > 0f ? Vector3.right : Vector3.left)
+            : Vector3.right;
+        
+        _isDashing   = true;
+        _dashTimer   = dashDuration;
+        _lastDashTime = Time.time;
+    }
+    private void HorizontalMovement()
+    {
+        float desiredX = _moveInput.x * walkSpeed;
+        Vector3 vel = _rb.linearVelocity;
+        vel.x = Mathf.Lerp(vel.x, desiredX, 1f - Mathf.Exp(-dashRecoveryRate * Time.fixedDeltaTime));
+        _rb.linearVelocity = vel;
+    }
+    #endregion
+    #region Debug
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(groundCheck.position, halfWidth * 2);
+        }
+    }
+    #endregion
+}

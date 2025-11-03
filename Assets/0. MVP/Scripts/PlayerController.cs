@@ -84,6 +84,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Walking()
     {
+        
         rb.MovePosition(rb.position + transform.forward * moveAmount.x * moveSpeed * Time.deltaTime);
         moveSpeed = iRunAction.IsPressed() ? runSpeed : walkSpeed;
         Camera.main.fieldOfView = iRunAction.IsPressed() ? Mathf.Lerp(65, 60, 0.1f) : Mathf.Lerp(60, 65, 0.1f);
