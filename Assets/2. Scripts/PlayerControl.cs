@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -66,8 +67,12 @@ public class PlayerControl : MonoBehaviour
 
     public void LeaveLadder()
     {
+        print(_rb.linearVelocity.x);
+        if (!isOnLadder) return;
         isOnLadder = false;
-        _rb.AddForce(Vector3.up * ladderExitForce, ForceMode.Impulse);
+        var pos = 1;
+        if (_moveInput.y < 0) pos = -1;
+        _rb.AddForce(new Vector3(_rb.linearVelocity.x, (jumpForce/2) * pos, _rb.linearVelocity.z), ForceMode.Impulse);
     } 
     
     #endregion
@@ -104,6 +109,8 @@ public class PlayerControl : MonoBehaviour
     private void Update()
     {
         _moveInput = _moveAction.ReadValue<Vector2>();
+        _moveInput.x = Math.Sign(_moveInput.x);
+        _moveInput.y = Math.Sign(_moveInput.y);
         _rb.useGravity = !isOnLadder;
     }
     private void FixedUpdate()
@@ -126,7 +133,7 @@ public class PlayerControl : MonoBehaviour
     private void CheckMove(InputAction.CallbackContext ctx)
     {
         if (ctx.ReadValue<Vector2>().y == 0) return;
-        isOnLadder = _canClimb;
+        //isOnLadder = _canClimb;
     }
     private void Move()
     {
@@ -146,15 +153,17 @@ public class PlayerControl : MonoBehaviour
         {
             HorizontalMovement();
         }
+
+        if (_moveInput.y != 0) isOnLadder = _canClimb;
     }
     private void GravityCheck()
     {
         if (isOnLadder) return;
         _rb.AddForce(Vector3.down * extraGravityForce, ForceMode.Force);
     }
-    private void Jump(bool bypass = false)
+    private void Jump()
     {
-        if (!_isGrounded || !bypass) return;
+        if (!_isGrounded) return;
         _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         LeaveLadder();
     }
