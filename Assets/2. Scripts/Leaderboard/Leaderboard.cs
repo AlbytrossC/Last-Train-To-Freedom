@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using System.IO;
 using System.Collections.Generic;
 public class Leaderboard : MonoBehaviour
 {
@@ -68,9 +67,7 @@ public class Leaderboard : MonoBehaviour
     }
     private void SortAndAssignRanks()
     {
-        
         _lbEntries.Sort((a, b) => a.time.CompareTo(b.time));
-
         
         for (int i = 0; i < _lbEntries.Count; i++)
         {
@@ -78,6 +75,8 @@ public class Leaderboard : MonoBehaviour
             e.rank = i + 1;
             _lbEntries[i] = e;
         }
+        
+        SaveToDisk();
     }
     #endregion Script Stuff
     #region Unity Inspector Stuff
@@ -109,4 +108,72 @@ public class Leaderboard : MonoBehaviour
             : $"[Leaderboard] No entry at rank {inspectorRemoveRank}");
     }
     #endregion Unity Inspector Stuff
+    #region Save To CSV
+    
+    private const string FolderName = "DATA";
+    private const string FileName   = "Leaderboard.csv";
+
+    private string FullPath =>
+        System.IO.Path.Combine(Application.dataPath, FolderName, FileName);
+
+    private void OnEnable() => LoadFromDisk();
+    private void OnDisable() => SaveToDisk();
+
+    private void LoadFromDisk()
+    {
+        _lbEntries.Clear();
+
+        if (!System.IO.File.Exists(FullPath))
+        {
+            Debug.Log($"[Leaderboard] No file at {FullPath}; starting empty.");
+            return;
+        }
+
+        try
+        {
+            foreach (var line in System.IO.File.ReadAllLines(FullPath))
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                var parts = line.Split(',');
+
+                if (parts.Length != 3) continue;
+                
+                if (!int.TryParse(parts[0], out int rank)) continue;
+                string name = parts[1];
+                if (!float.TryParse(parts[2], out float time)) continue;
+
+                _lbEntries.Add(new LBEntry(rank, name, time));
+            }
+
+            SortAndAssignRanks();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[Leaderboard] Load failed: {ex}");
+        }
+    }
+
+    private void SaveToDisk()
+    {
+        try
+        {
+            var folder = System.IO.Path.GetDirectoryName(FullPath);
+            if (!System.IO.Directory.Exists(folder))
+                System.IO.Directory.CreateDirectory(folder);
+
+            using (var writer = new System.IO.StreamWriter(FullPath, false))
+            {
+                foreach (var e in _lbEntries)
+                {
+                    writer.WriteLine($"{e.rank},{e.name},{e.time:0.00}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[Leaderboard] Save failed: {ex}");
+        }
+    }
+    
+    #endregion
 }

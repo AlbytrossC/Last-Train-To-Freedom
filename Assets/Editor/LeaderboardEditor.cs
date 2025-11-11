@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+
 [CustomEditor(typeof(Leaderboard))]
 public class LeaderboardEditor : Editor
 {
@@ -30,7 +31,6 @@ public class LeaderboardEditor : Editor
         // -------------
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("=== Remove Entry By # ===", EditorStyles.boldLabel);
-        //lb.inspectorRemoveRank = EditorGUILayout.IntField("Rank to remove", lb.inspectorRemoveRank);
         lb.inspectorRemoveRank = EditorGUILayout.IntSlider(lb.inspectorRemoveRank, 1, 10);
 
         if (GUILayout.Button("Remove Entry"))
