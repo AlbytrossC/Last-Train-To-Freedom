@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8075663730609147932}
   - component: {fileID: 7695049510316793830}
   m_Layer: 7
-  m_Name: Floor 10x1
+  m_Name: Path 10x1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
