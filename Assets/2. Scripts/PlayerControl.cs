@@ -10,7 +10,7 @@ public class PlayerControl : MonoBehaviour
     
     [Header("Horizontal Movement")]
     [Tooltip("Walking speed")]
-    public float walkSpeed = 6f * 10f;
+    public float walkSpeed = 80f;
 
     [Header("Dash")]
     [Tooltip("Speed while dashing (units per second)")]
