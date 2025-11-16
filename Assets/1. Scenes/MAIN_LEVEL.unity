@@ -8524,6 +8524,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1089764474955164372, guid: 00c9b6aacb4ccf24494159f412ba606c, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3156361186251866569, guid: 00c9b6aacb4ccf24494159f412ba606c, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -8654,6 +8658,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 557144190699899238, guid: 587a19c213a122b45ad55dffe4b0c2b9, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2551682205197951611, guid: 587a19c213a122b45ad55dffe4b0c2b9, type: 3}
       propertyPath: m_Mesh
       value: 
