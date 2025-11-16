@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
@@ -25,6 +27,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody _rb;
     private Vector3 startPos;
     private float walkDist = 0;
+    private bool isThinking = false;
     
     #endregion
     #region Unity Methods
@@ -32,6 +35,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         SetupEnemy(myType);
+        StartCoroutine(ThinkAboutIt());
     }
 
     private void Update()
@@ -41,6 +45,8 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isThinking) return;
+        print("not thinking");
         switch (myType)
         {
             case EnemyType.Active:
@@ -63,7 +69,7 @@ public class Enemy : MonoBehaviour
         {
             case EnemyType.Idle:
                 rotationSpeed = 30;
-                desiredRotationAngle = 90; //temp to make face camera
+                desiredRotationAngle = 90;
                 break;
             case EnemyType.Active:
                 currentWalkSpeed = walkSpeed;
@@ -76,14 +82,15 @@ public class Enemy : MonoBehaviour
     {
         desiredRotationAngle += turnDir;
         RotateEnemy(Turn(desiredRotationAngle));
-        //transform.eulerAngles = new Vector3(transform.eulerAngles.x, Turn(desiredRotationAngle+turnDir), transform.eulerAngles.z);
         if (transform.eulerAngles.y < maxTurnLeft)
         {
+            StartCoroutine(ThinkAboutIt());
             RotateEnemy(maxTurnLeft + 1);
             turnDir *= -1;
         }
         if (transform.eulerAngles.y > maxTurnRight)
         {
+            StartCoroutine(ThinkAboutIt());
             RotateEnemy(maxTurnRight - 1);
             turnDir *= -1;
         }
@@ -105,8 +112,8 @@ public class Enemy : MonoBehaviour
         walkDist += MoveEnemy().x;
         if (Math.Abs(walkDist) > maxWalkDist)
         {
-            print(RotateEnemy(transform.eulerAngles.y + 180));
-            //RotateEnemy();
+            StartCoroutine(ThinkAboutIt(true));
+            //RotateEnemy(transform.eulerAngles.y + 180);
             walkSpeed *= -1;
             walkDist = 0;
         }
@@ -127,6 +134,22 @@ public class Enemy : MonoBehaviour
         var oldPos = transform.position;
         transform.Translate(Vector3.right * walkSpeed * Time.deltaTime, Space.World);
         return transform.position - oldPos;
+    }
+
+    private IEnumerator ThinkAboutIt(bool EnemyTurnFix = false)
+    {
+        var clr = GetComponent<Renderer>().material.color;
+        isThinking = true;
+        GetComponent<Renderer>().material.color = Color.blueViolet;
+        
+        if (Random.Range(0, 100) < 50)
+            yield return new WaitForSeconds(Random.Range(0.1f, 1.5f));
+        else 
+            yield return new WaitForSeconds(Random.Range(3.0f, 5.0f));
+        
+        isThinking = false;
+        GetComponent<Renderer>().material.color = clr;
+        if (EnemyTurnFix) RotateEnemy(transform.eulerAngles.y + 180);
     }
     
     #endregion
