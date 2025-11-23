@@ -7,9 +7,12 @@ public class Enemy : MonoBehaviour
 {
     #region Public Variables
     
-    public enum EnemyType { Idle, Active }
+    public enum EnemyType { Idle, Active, Window }
 
+    public GameObject flashlight;
+    public GameObject blinds = null;
     public EnemyType myType;
+    public bool windowOddTimer = false;
     public float walkSpeed = 40; //player = 80f
     public float rotationSpeed; //idle = 30, active = 100
     public float maxWalkDist = 150;
@@ -35,18 +38,11 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         SetupEnemy(myType);
-        StartCoroutine(ThinkAboutIt());
-    }
-
-    private void Update()
-    {
-        
     }
 
     private void FixedUpdate()
     {
         if (isThinking) return;
-        print("not thinking");
         switch (myType)
         {
             case EnemyType.Active:
@@ -54,6 +50,9 @@ public class Enemy : MonoBehaviour
                 break;
             case EnemyType.Idle:
                 FixedIdle();
+                break;
+            case EnemyType.Window:
+                FixedWindow();
                 break;
         }
     }
@@ -70,10 +69,19 @@ public class Enemy : MonoBehaviour
             case EnemyType.Idle:
                 rotationSpeed = 30;
                 desiredRotationAngle = 90;
+                StartCoroutine(ThinkAboutIt());
                 break;
             case EnemyType.Active:
                 currentWalkSpeed = walkSpeed;
                 rotationSpeed = 100;
+                StartCoroutine(ThinkAboutIt());
+                break;
+            case EnemyType.Window:
+                desiredRotationAngle = 90;
+                if (windowOddTimer)
+                {
+                    StartCoroutine(ThinkAboutIt(false, true));
+                }
                 break;
         }
     }
@@ -94,6 +102,13 @@ public class Enemy : MonoBehaviour
             RotateEnemy(maxTurnRight - 1);
             turnDir *= -1;
         }
+    }
+
+    private void FixedWindow()
+    {
+        StartCoroutine(ThinkAboutIt(false, true));
+        flashlight.SetActive(!flashlight.activeSelf);
+        blinds.SetActive(!flashlight.activeSelf);
     }
 
     private void FixedActive()
@@ -136,21 +151,30 @@ public class Enemy : MonoBehaviour
         return transform.position - oldPos;
     }
 
-    private IEnumerator ThinkAboutIt(bool EnemyTurnFix = false)
+    private IEnumerator ThinkAboutIt(bool EnemyTurnFix = false, bool windowfix = false)
     {
         var clr = GetComponent<Renderer>().material.color;
         isThinking = true;
         GetComponent<Renderer>().material.color = Color.blueViolet;
+
+        if (windowfix)
+        {
+            yield return new WaitForSeconds(2);
+            isThinking = false;
+            GetComponent<Renderer>().material.color = clr;
+            yield break;
+        }
         
         if (Random.Range(0, 100) < 50)
             yield return new WaitForSeconds(Random.Range(0.1f, 1.5f));
-        else 
+        else
             yield return new WaitForSeconds(Random.Range(3.0f, 5.0f));
-        
+
         isThinking = false;
         GetComponent<Renderer>().material.color = clr;
         if (EnemyTurnFix) RotateEnemy(transform.eulerAngles.y + 180);
+        
     }
-    
+
     #endregion
 }

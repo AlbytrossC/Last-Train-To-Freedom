@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,7 +48,7 @@ public class PlayerControl : MonoBehaviour
     #endregion
     #region Private Variables
     
-    private Rigidbody _rb;
+    public Rigidbody _rb;
     private InputAction _moveAction;
     private InputAction _jumpAction;
     private InputAction _dashAction;
@@ -59,6 +60,7 @@ public class PlayerControl : MonoBehaviour
     private float _dashTimer;
     private Vector3 _dashDirection;
     private float _lastDashTime = -Mathf.Infinity;
+    private Vector3 ladderTop;
     private float TargetSpeed => walkSpeed;
     #endregion
     #region Public Methods
@@ -67,12 +69,8 @@ public class PlayerControl : MonoBehaviour
 
     public void LeaveLadder()
     {
-        print(_rb.linearVelocity.x);
         if (!isOnLadder) return;
         isOnLadder = false;
-        var pos = 1;
-        if (_moveInput.y < 0) pos = -1;
-        _rb.AddForce(new Vector3(_rb.linearVelocity.x, (jumpForce/2) * pos, _rb.linearVelocity.z), ForceMode.Impulse);
     } 
     
     #endregion
@@ -149,23 +147,27 @@ public class PlayerControl : MonoBehaviour
                 _isDashing = false;
             }
         }
+        else if (isOnLadder) ResetXVelocity();
         else
         {
             HorizontalMovement();
         }
 
-        if (_moveInput.y != 0) isOnLadder = _canClimb;
+        if (_moveInput.y != 0 && !_jumpAction.inProgress && _canClimb) isOnLadder = _canClimb;
     }
     private void GravityCheck()
     {
         if (isOnLadder) return;
         _rb.AddForce(Vector3.down * extraGravityForce, ForceMode.Force);
     }
+    private void ResetXVelocity() => _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, _rb.linearVelocity.z);
     private void Jump()
     {
-        if (!_isGrounded) return;
-        _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        if (!_isGrounded && !isOnLadder) return;
+        if (isOnLadder) _canClimb = false;
         LeaveLadder();
+        _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        
     }
     private void StartDash()
     {
@@ -196,8 +198,17 @@ public class PlayerControl : MonoBehaviour
         if (!isOnLadder) return;
         LadderStall();
         float climbSpeed = _moveInput.y * (walkSpeed * climbSpeedMultiplier);
-        _rb.MovePosition(transform.position + Vector3.up * climbSpeed * Time.fixedDeltaTime);    
+        if ((transform.position.y + climbSpeed * Time.fixedDeltaTime) > (ladderTop.y))
+        {
+            transform.position = ladderTop - Vector3.down;
+            climbSpeed = 0;
+        }
+        _rb.MovePosition(new Vector3(ladderTop.x, transform.position.y, transform.position.z) + Vector3.up * climbSpeed * Time.fixedDeltaTime);
+        if (transform.position.y > ladderTop.y)
+            transform.position = new Vector3(transform.position.x, ladderTop.y, transform.position.z);
     }
+
+    public void GetLadderTop(Transform pos) => ladderTop = pos.position;
 
     private void LadderStall()
     {
