@@ -8,11 +8,11 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/1. Scenes/MAIN_LEVEL.unity
     guid: c88fbc35ed89b664d9a239a97acb56e7
-  - enabled: 0
-    path: Assets/1. Scenes/TITLE_SCREEN.unity
+  - enabled: 1
+    path: Assets/1. Scenes/TITLE.unity
     guid: 65d82a3bc0f955249bdf6415c1239b10
   - enabled: 1
-    path: Assets/1. Scenes/TEST1_LEVEL.unity
+    path: Assets/1. Scenes/MAIN.unity
     guid: c9bf5d28a6d769a41920d96b50829150
   - enabled: 0
     path: Assets/1. Scenes/X_MVP.unity

@@ -8,7 +8,7 @@ public class BasicRestart : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene("TITLE");
         }
     }
 }
