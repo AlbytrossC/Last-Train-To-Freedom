@@ -8,7 +8,11 @@ public class BasicRestart : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+<<<<<<< Updated upstream:Assets/1. Scenes/0. MVP/Scripts/BasicRestart.cs
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+=======
+            FindFirstObjectByType<GameManager>().RestartLevel();
+>>>>>>> Stashed changes:Assets/0. MVP/Scripts/BasicRestart.cs
         }
     }
 }
